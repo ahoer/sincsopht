@@ -1,3 +1,9 @@
 # sincsopht
 Syncronisation Software
-Servus
+
+Pending actions:
+parse command line (argparse)
+create a central data module for saving program parameters (currently from command line)
+sync method
+error handling
+profiling and speedup
