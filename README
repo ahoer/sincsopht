@@ -1,3 +1,12 @@
 # sincsopht
 Syncronisation Software
-Servus
+
+done:
+parse command line (argparse)
+create a central data module for saving program parameters (currently from command line)
+create tree object incl. level objects with directories and files incl. attributes
+
+Pending actions:
+sync method
+error handling
+profiling and speedup
