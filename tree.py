@@ -46,3 +46,13 @@ class Tree:
     def get_level(self, path):
         level_num = path.split(self.separator)
         return len(level_num)
+
+##########################################################
+    def Compare_with(self, other):
+        index = 0
+        for lvl in self.levels:
+            olvl = other.levels[index]
+            index += 1
+            for dir in lvl.directories:
+                if dir in olvl:
+                    dir.available = True

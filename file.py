@@ -6,6 +6,7 @@ __author__ = 'fernass daoud'
 class File:
     def __init__(self, path, e_file):
         self.path = path
+        self.available = False # flag to be set during comparison of files in directory objects
 
 #        (self.mode, self.ino, self.dev, self.nlink, self.uid, self.gid, self.size, self.atime, self.mtime, self.ctime) \
 #            = os.stat(e_file)
@@ -29,3 +30,9 @@ class File:
         self.name = e_file
 
 
+##########################################################
+    def check_name(self, e_files):
+        for e_file in e_files:
+            if self.name == e_file.name:
+                self.available = True
+                e_file.available = True

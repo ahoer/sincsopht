@@ -9,4 +9,6 @@ create tree object incl. level objects with directories and files incl. attribut
 Pending actions:
 sync method
 error handling
+logging
 profiling and speedup
+add --force option
