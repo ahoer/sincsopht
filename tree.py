@@ -2,6 +2,7 @@ from level import Level
 from treestat import TreeStat
 from directory import Directory
 import os
+import shutil
 
 __author__ = 'fernass daoud'
 
@@ -39,20 +40,51 @@ class Tree:
 
         pass
 
-
-
-
 ##########################################################
     def get_level(self, path):
         level_num = path.split(self.separator)
         return len(level_num)
 
 ##########################################################
-    def Compare_with(self, other):
+    def Compare_with(self, target):
         index = 0
         for lvl in self.levels:
-            olvl = other.levels[index]
+            tlvl = target.levels[index]
             index += 1
             for dir in lvl.directories:
-                if dir in olvl:
+                if dir in tlvl:
                     dir.available = True
+
+##########################################################
+    def sync_with(self, target):
+# Way 1: Source to Target
+        index = 0
+        for lvl in self.levels:
+            tlvl = target.levels[index]
+            index += 1
+            for dir in lvl.directories:
+# This solves the problem of the preceding ./ (linux) or .\ (win) in the local path
+                if dir.name.find("." + target.separator) == 0:
+                    local = dir.name[2:]
+                else:
+                    local = dir.name
+                if not dir.available: # Case 1
+                   dest = os.path.join(target.root, local)
+                   dir.set_available()
+                   try:
+                       shutil.copytree(dir.path, dest)
+                   except FileExistsError:
+                       print("Directory {} exists.".format(dir.name))
+                else: # Case 2
+                    for file in dir.files:
+                        if not file.available:
+                            dest = os.path.join(target.root, local, file.name)
+                            src = os.path.join(dir.path, file.name)
+                            try:
+                                shutil.copy(src, dest)
+                            except FileExistsError:
+                                print("File {} exists.".format(file.name))
+                            file.available = True
+
+
+# Way 2: Target to Source

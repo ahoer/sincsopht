@@ -67,6 +67,6 @@ Way 2, Target to Source: Run again through levels (source and target in parallel
 8.2.1 if target file is newer than source one, this case can be excluded since covered by 4.2.2
 8.1.2 if target file is older than source one: this case can be excluded since covered by 4.2.1
 '''
-
+source.sync_with(target)
 pass
 
