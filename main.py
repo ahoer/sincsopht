@@ -42,31 +42,24 @@ Way 1, Source to Target: Run through levels (source and target in parallel). Run
 2. If a directory on source is available on target, the included files are checked.
 3. If file on source is not available on target, copy file from source to target.
 4. if file on source is available on target:
-4.1 if --bidirectional
-4.1.1 if source file is newer than target one, source file is copied overriding the target
-4.1.2 if source file is older than target one, pass (nothing happens, see Way 2)
-4.2 if unidirectional mode
-4.2.1 if source file is newer than target one, source file is copied overriding the target
-4.2.2 if source file is older than target one:
+4.1 if source file is newer than target one, source file is copied overriding the target
+4.2 if source file is older than target one
+4.2.1 if --bidirectional, target file is copied overriding source file
+4.2.2 if not --bidirectional
 4.2.2.1 If --force (the older) source file is copied overriding the (newer) target
-4.2.2.2  If no --force output a warning and pass
+4.2.2.2 If not --force output a warning and pass
 
 Way 2, Target to Source: Run again through levels (source and target in parallel). Run through directories of each level.
 5. If a directory on target is not available on source
 5.1 If --delete delete directory including all included files (and subdirectories) on target
-5.2 If no --delete pass (do nothing)
+5.2 If no --delete print warning and pass
 6. If a directory on target is available on source, the included files are checked.
 7. If file on target is not available on source
 7.1 If --delete delete file on target
-7.2 If no --delete pass (do nothing)
-8. if file on target is available on source:
-8.1 if bidirectional mode
-8.1.1 if target file is newer than source one, target file is copied overriding the source
-8.1.2 if target file is older than source one: this case can be excluded since covered by 4.1.1
-8.2 if unidirectional mode
-8.2.1 if target file is newer than source one, this case can be excluded since covered by 4.2.2
-8.1.2 if target file is older than source one: this case can be excluded since covered by 4.2.1
+7.2 If not --delete and not --bidirectional print warning and pass
+7.3 If not --delete and --bidirectional copy target file to source
+8. if file on target is available on source: this case is covered by Way 1 (no coding required).
 '''
-source.sync_with(target)
+source.sync_with(target, parameters)
 pass
 

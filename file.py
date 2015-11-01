@@ -1,4 +1,5 @@
 import os
+import time
 
 __author__ = 'fernass daoud'
 
@@ -32,10 +33,12 @@ class File:
 
 
 ##########################################################
-    def check_name(self, e_files):
+    def check_attrib(self, e_files):
         for e_file in e_files:
             if self.name == e_file.name:
+                self.target_file = e_file
                 self.available = True
                 e_file.available = True
+                print(time.ctime(self.mtime),"\n",time.ctime(e_file.mtime) )
                 if self.mtime >= e_file.mtime:
                     self.newer = True

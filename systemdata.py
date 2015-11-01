@@ -36,6 +36,6 @@ class SystemData:
         self.force = args.force
         if self.bidirectional:
             self.force = False
-#            raise Warning("When the option -bi (--bidirectional) is set, -f (--force) is deactivated")
+            print("When the option -bi (--bidirectional) is set, -f (--force) is deactivated")
         self.delete = delete = args.delete
         self.verbose = args.verbose

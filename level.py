@@ -20,15 +20,12 @@ class Level:
 
 
 ##########################################################
-    def __contains__(self, item):
+'''    def __contains__(self, item):
         for dir in self.directories:
             if dir.name == item.name:
-                for file in dir.files:
-                    file.check_name(item.files)
-                item.available = True
                 return True
         return False
-
+'''
 
 ##########################################################
 '''    def __iter__(self):
