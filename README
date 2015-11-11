@@ -9,8 +9,9 @@ add --force option
 sync method
 
 Pending actions:
-input file additional to commandline
+GUI additional to commandline
 error handling
 logging
-profiling and speedup
 ignore pattern (see copytree)
+dry run option
+profiling and speedup
