@@ -1,6 +1,7 @@
 from level import Level
 from treestat import TreeStat
 from directory import Directory
+from file import File
 import os
 import shutil
 
