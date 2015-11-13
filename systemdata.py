@@ -34,7 +34,7 @@ class SystemData:
         self.target = args.target
         self.bidirectional = args.bidirectional
         self.force = args.force
-        if self.bidirectional:
+        if self.bidirectional and self.force:
             self.force = False
             print("When the option -bi (--bidirectional) is set, -f (--force) is deactivated")
         self.delete = delete = args.delete

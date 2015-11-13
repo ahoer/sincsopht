@@ -39,6 +39,8 @@ class File:
                 self.target_file = e_file
                 self.available = True
                 e_file.available = True
-                print(time.ctime(self.mtime),"\n",time.ctime(e_file.mtime) )
-                if self.mtime >= e_file.mtime:
+#                print(time.ctime(self.mtime),"\n",time.ctime(e_file.mtime) )
+                if self.mtime > e_file.mtime:
                     self.newer = True
+                elif self.mtime == e_file.mtime:
+                    self.newer = None

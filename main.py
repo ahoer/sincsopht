@@ -58,5 +58,4 @@ Way 2, Target to Source: Run again through levels (source and target in parallel
 8. if file on target is available on source: this case is covered by Way 1 (no coding required).
 '''
 source.sync_with(target, parameters)
-pass
 
