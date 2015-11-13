@@ -52,7 +52,7 @@ class SystemData:
             sys.exit(0)
 
 ##########################################################
-    def run(self):
+    def run(self, log):
         Source = Tree(self.source)
 # initialise the tree object, i.e. generate a tree with as much levels as required (as acquired the treestatistics)
 # and set the correct size of each level (attribute levels), i.e. the number of the directories of each
@@ -102,4 +102,4 @@ class SystemData:
 #7.3 If not --delete and not --bidirectional output info and pass
 #8. if file on target is available on source: this case is covered by Way 1 (no coding required).
 
-        Source.sync_with(Target, self)
+        Source.sync_with(Target, self, log)

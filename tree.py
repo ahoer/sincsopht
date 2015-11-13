@@ -1,9 +1,9 @@
 from level import Level
 from treestat import TreeStat
 from directory import Directory
-from file import File
 import os
 import shutil
+import logging
 
 __author__ = 'fernass daoud'
 
@@ -79,7 +79,8 @@ class Tree:
         self.levels[index].set_directories(flag)
 
 ##########################################################
-    def sync_with(self, target, parameters):
+    def sync_with(self, target, parameters, log):
+        self.log = log
 # Way 1: Source to Target
         index = 0
         for lvl in self.levels:
@@ -163,12 +164,22 @@ class Tree:
             try:
                 shutil.copytree(dest, src)
             except FileExistsError:
-                print("Directory {} is already available. Do nothing.".format(src))
+                message = "Directory {} is already available. Do nothing.".format(src)
+                print(message)
+#                self.log.setLevel(logging.INFO)
+                self.log.emit(message)
             except:
-                print("Problem with copying the directory {}. Stop.".format(src))
+                message = "Problem with copying the directory {}. Stop.".format(src)
+                print(message)
+                self.log.setLevel(logging.ERROR)
+                self.log.emit(message, "error")
+
         else:
-            print("Warning: Directory {} is available only on target.\n".format(dest))
-            print("Use option -d (-delete) in order to delete obsolete files and directories on tagret.")
+            message = "Warning: Directory {} is available only on target.\n" \
+                      "Use option -d (-delete) in order to delete obsolete files and directories on tagret.".format(dest)
+            print(message)
+            self.log.setLevel(logging.WARNING)
+            self.log.emit(message, "warning")
 
 ##########################################################
     def case_6_to_8(self, tdir, local, troot, parameters):

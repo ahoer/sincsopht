@@ -3,6 +3,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import tkinter.font as tkfont
 from PIL import Image, ImageTk
+from widgetlogger import WidgetLogger
 
 __author__ = 'fernass daoud'
 
@@ -91,7 +92,8 @@ class MyApp(tkinter.Frame):
         self.ForceCheck.grid(row=4, column=0, sticky="W")
 
         self.LogText = tkinter.Text(self, wrap="word", height=15, font=self.fontlog, padx=5, pady=5)
-        self.LogText.tag_config("o", foreground="orange")
+        self.LogText.tag_config("warning", foreground="orange")
+        self.LogText.tag_config("error", foreground="red")
         self.LogText.tag_config("c", justify="center")
         self.LogText.tag_config("u", underline=True)
         self.LogText.tag_config("space_below", spacing3=25)
@@ -99,7 +101,6 @@ class MyApp(tkinter.Frame):
 #        self.LogText.tag_config("ind", lmargin1=10)
         self.LogText.insert("end", "Welcome to SincSopht\n", ("c", "u", "space_below"))
 #        self.LogText.insert("end", "\n\n\n")
-        self.LogText.insert("end", "Log output ...\n", ("o"))
         self.LogText.configure(state="disable")
         self.LogText.grid(row=5, column=1, columnspan=1, rowspan=1, sticky="n"+"s")
 
@@ -115,6 +116,7 @@ class MyApp(tkinter.Frame):
         self.LogScrollX["command"] = self.LogScrollXHandler
         self.LogScrollX.grid(row=6,column=1, sticky="n"+"e"+"w")
 
+        self.LogWidget = WidgetLogger(self.LogText)
 
 ###########################################
     def createBindings(self):
@@ -132,7 +134,7 @@ class MyApp(tkinter.Frame):
             self.parameters.force = self.ForceBool.get()
             self.parameters.delete = self.DeleteBool.get()
 
-            self.parameters.run()
+            self.parameters.run(self.LogWidget)
 
 ############## HANDLER ####################
     def SyncShiftButton_1(self, event):
