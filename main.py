@@ -8,7 +8,6 @@ __author__ = 'fernass daoud'
 parameters = SystemData()
 parameters.commandline()
 
-<<<<<<< HEAD
 if not parameters.nogui:
     root = tkinter.Tk()
     app = MyApp(parameters, root)

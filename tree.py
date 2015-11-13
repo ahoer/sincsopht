@@ -31,12 +31,14 @@ class Tree:
     def fill(self):
         os.chdir(self.root)
         for t in os.walk("."):
-            lvl = self.get_level(t[0])
+            lvl = self.get_level(t[0].replace("\\","/"))
 # each level contains a list of the hosted directories. Each of these directories contains ONLY files.
 # It mustn't know about subdirectories. These are contained in the other levels objects
             i_level = self.levels[lvl - 1]
-            path = os.path.join(self.root, os.path.abspath(t[0]))
-            i_dir = Directory(path, t[0], t[2])
+            local = t[0].replace("\\","/")
+            path = os.path.join(self.root, os.path.abspath(local)).replace("\\","/")
+            path = path.replace("\\","/")
+            i_dir = Directory(path, local, t[2])
             i_level.directories.append(i_dir)
 
         pass
@@ -116,7 +118,7 @@ class Tree:
 
 ##########################################################
     def case_1(self, dir, local, root):
-        dest = os.path.join(root, local)
+        dest = os.path.join(root, local).replace("\\","/")
         dir.set_available()
         try:
             shutil.copytree(dir.path, dest)
@@ -126,8 +128,8 @@ class Tree:
 ##########################################################
     def case_2_to_4(self, dir, local, root, parameters):
         for file in dir.files:
-            dest = os.path.join(root, local, file.name)
-            src = os.path.join(dir.path, file.name)
+            dest = os.path.join(root, local, file.name).replace("\\","/")
+            src = os.path.join(dir.path, file.name).replace("\\","/")
 
             if not file.available: # case 3
                 shutil.copy(src, dest)
@@ -153,8 +155,8 @@ class Tree:
 
 ##########################################################
     def case_5(self, tdir, local, troot, parameters):
-        dest = os.path.join(troot, local)
-        src = os.path.join(self.root, local)
+        dest = os.path.join(troot, local).replace("\\","/")
+        src = os.path.join(self.root, local).replace("\\","/")
         if parameters.delete:
             shutil.rmtree(dest)
         elif parameters.bidirectional:
@@ -171,7 +173,7 @@ class Tree:
 ##########################################################
     def case_6_to_8(self, tdir, local, troot, parameters):
         for file in tdir.files:
-            dest = os.path.join(tdir.path, file.name)
+            dest = os.path.join(tdir.path, file.name).replace("\\","/")
             src = dest.replace(troot, self.root)
 
             if not file.available: # case 7

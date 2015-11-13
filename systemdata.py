@@ -37,8 +37,8 @@ class SystemData:
         args = parser.parse_args()
 
         self.nogui = args.nogui
-        self.source = args.source
-        self.target = args.target
+        self.source = args.source.replace("\\","/")
+        self.target = args.target.replace("\\","/")
         self.bidirectional = args.bidirectional
         self.force = args.force
         if self.bidirectional and self.force:

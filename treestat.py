@@ -5,14 +5,17 @@ class TreeStat():
     def __init__(self):
         self.levels = [0]
         if sys.platform == "win32":
-            self.sep = "\\"
+            self.platform = "win32"
+#            self.sep = "\\"
         else:
-            self.sep = "/"
+            self.platform = "linux"
+#            self.sep = "/"
+        self.sep = "/"
 
-
+###########################################
     def check(self, data):
         last_level = len(self.levels)
-        current_level = self.get_level(data[0])
+        current_level = self.get_level(data[0].replace("\\","/"))
 
         if last_level < current_level:
             self.levels.append(1)
@@ -21,7 +24,7 @@ class TreeStat():
         elif last_level > current_level:
             self.levels[current_level - 1] += 1
 
-
+###########################################
     def get_level(self, path):
         level_num = path.split(self.sep)
         return len(level_num)
