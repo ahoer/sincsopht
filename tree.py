@@ -47,11 +47,23 @@ class Tree:
         return len(level_num)
 
 ##########################################################
+    def check_level(self, index):
+        if index <len(self.levels):
+            return self.levels[index]
+        else:
+            return None
+
+
+##########################################################
     def Compare_with(self, target):
-        index = 0
+        index = -1
         for lvl in self.levels:
-            tlvl = target.levels[index]
             index += 1
+            tlvl = target.check_level(index)
+            if tlvl == None:
+                self.set_level(index, False)
+                continue
+
             for dir in lvl.directories:
                 for tdir in tlvl.directories:
                     if dir.name == tdir.name:
@@ -60,13 +72,16 @@ class Tree:
                         for file in dir.files:
                             file.check_attrib(tdir.files)
                         break
+##########################################################
+    def set_level(self, index, flag):
+        self.levels[index].set_directories(flag)
 
 ##########################################################
     def sync_with(self, target, parameters):
 # Way 1: Source to Target
         index = 0
         for lvl in self.levels:
-            tlvl = target.levels[index]
+            tlvl = target.check_level(index) # if target level is not availabe None is returned
             index += 1
             for dir in lvl.directories:
 # This solves the problem of the preceding ./ (linux) or .\ (win) in the local path
@@ -83,7 +98,7 @@ class Tree:
 # Way 2: Target to Source
         index = 0
         for tlvl in target.levels:
-            lvl = self.levels[index]
+            lvl = self.check_level(index)
             index += 1
             for tdir in tlvl.directories:
 # This solves the problem of the preceding ./ (linux) or .\ (win) in the local path
@@ -116,19 +131,20 @@ class Tree:
 
             if not file.available: # case 3
                 shutil.copy(src, dest)
-                file.target_file.available = True
             elif file.available: # case 4
-                if file.newer: # case 4.1
-                    os.replace(src, dest)
+                if file.newer == None:
+                    pass
+                elif file.newer: # case 4.1
+                    shutil.copy(src, dest)
                     file.newer = False
                     file.target_file.newer = False
                 elif not file.newer: # case 4.2
                     if parameters.bidirectional: # case 4.2.1
-                        os.replace(dest, src)
+                        shutil.copy(dest, src)
                         file.newer = False
                         file.target_file.newer = False
                     elif parameters.bidirectional and parameters.force: # case 4.2.2.1
-                        os.replace(dest, src)
+                        shutil.copy(dest, src)
                         file.newer = False
                         file.target_file.newer = False
                     else: # case 4.2.2.2
@@ -136,27 +152,35 @@ class Tree:
 
 
 ##########################################################
-    def case_5(self, tdir, local, root, parameters):
-        dest = os.path.join(root, local)
+    def case_5(self, tdir, local, troot, parameters):
+        dest = os.path.join(troot, local)
+        src = os.path.join(self.root, local)
         if parameters.delete:
             shutil.rmtree(dest)
+        elif parameters.bidirectional:
+            try:
+                shutil.copytree(dest, src)
+            except FileExistsError:
+                print("Directory {} is already available. Do nothing.".format(src))
+            except:
+                print("Problem with copying the directory {}. Stop.".format(src))
         else:
             print("Warning: Directory {} is available only on target.\n".format(dest))
             print("Use option -d (-delete) in order to delete obsolete files and directories on tagret.")
 
 ##########################################################
-    def case_6_to_8(self, tdir, local, root, parameters):
+    def case_6_to_8(self, tdir, local, troot, parameters):
         for file in tdir.files:
-            dest = os.path.join(root, local, file.name)
-            src = os.path.join(tdir.path, file.name)
+            dest = os.path.join(tdir.path, file.name)
+            src = dest.replace(troot, self.root)
 
             if not file.available: # case 7
                 if parameters.delete: # case 7.1
                     os.remove(dest)
-                elif not parameters.delete and not parameters.bidirectional: # case 7.2
+                elif parameters.bidirectional: # case 7.2
+                    shutil.copy(dest, src)
+                elif not parameters.delete and not parameters.bidirectional: # case 7.3
                     print("Warning: The file {} is available only on target.\n".format(dest))
                     print("Use option -d (-delete) in order to delete obsolete files and directories on tagret.")
-                elif not parameters.delete and parameters.bidirectional: # case 7.3
-                    shutil.copy(dest, src)
 
 

@@ -18,6 +18,10 @@ class Level:
     def fill(self, dirs, files):
         pass
 
+    ##########################################################
+    def set_directories(self, flag):
+        for directory in self.directories:
+            directory.available = flag
 
 ##########################################################
 '''    def __contains__(self, item):
