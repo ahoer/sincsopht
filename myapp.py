@@ -13,7 +13,7 @@ class MyApp(tkinter.Frame):
         self.parameters = parameters
 
         self.font_main = tkfont.Font(family="Arial", size=10, weight="bold", slant="italic")
-        self.fontlog = tkfont.Font(family="FixedSys", size=10)
+        self.fontlog = tkfont.Font(family="FixedSys", size=6)
         master.resizable(width=False, height=True)
         master.geometry("970x500+200+100")
 

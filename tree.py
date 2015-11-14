@@ -124,7 +124,10 @@ class Tree:
         try:
             shutil.copytree(dir.path, dest)
         except FileExistsError:
-            print("Directory {} exists.".format(dir.name))
+            message = "Directory {} exists. Do nothing".format(dir.name)
+            print(message)
+            self.log.setLevel(logging.INFO)
+            self.log.emit(message)
 
 ##########################################################
     def case_2_to_4(self, dir, local, root, parameters):
@@ -151,7 +154,10 @@ class Tree:
                         file.newer = False
                         file.target_file.newer = False
                     else: # case 4.2.2.2
-                        print("Warning: target file:{},\n is newer than source file:{}".format(dest,src))
+                        message = "target file:{}, is newer than source file:{}".format(dest,src)
+                        print(message)
+                        self.log.setLevel(logging.WARNING)
+                        self.log.emit(message)
 
 
 ##########################################################
@@ -166,7 +172,7 @@ class Tree:
             except FileExistsError:
                 message = "Directory {} is already available. Do nothing.".format(src)
                 print(message)
-#                self.log.setLevel(logging.INFO)
+                self.log.setLevel(logging.INFO)
                 self.log.emit(message)
             except:
                 message = "Problem with copying the directory {}. Stop.".format(src)
@@ -175,10 +181,9 @@ class Tree:
                 self.log.emit(message, "error")
 
         else:
-            message = "Warning: Directory {} is available only on target.\n" \
-                      "Use option -d (-delete) in order to delete obsolete files and directories on tagret.".format(dest)
+            message = "Directory {} is available only on target.".format(dest)
             print(message)
-            self.log.setLevel(logging.WARNING)
+            self.log.setLevel(logging.INFO)
             self.log.emit(message, "warning")
 
 ##########################################################
@@ -193,7 +198,9 @@ class Tree:
                 elif parameters.bidirectional: # case 7.2
                     shutil.copy(dest, src)
                 elif not parameters.delete and not parameters.bidirectional: # case 7.3
-                    print("Warning: The file {} is available only on target.\n".format(dest))
-                    print("Use option -d (-delete) in order to delete obsolete files and directories on tagret.")
+                    message = "The file {} is available only on target.".format(dest)
+                    print(message)
+                    self.log.setLevel(logging.INFO)
+                    self.log.emit(message, "warning")
 
 
