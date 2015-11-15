@@ -13,7 +13,7 @@ class MyApp(tkinter.Frame):
         self.parameters = parameters
 
         self.font_main = tkfont.Font(family="Arial", size=10, weight="bold", slant="italic")
-        self.fontlog = tkfont.Font(family="FixedSys", size=6)
+        self.fontlog = tkfont.Font(family="FixedSys", size=4)
         master.resizable(width=False, height=True)
         master.geometry("970x500+200+100")
 
@@ -92,6 +92,7 @@ class MyApp(tkinter.Frame):
         self.ForceCheck.grid(row=4, column=0, sticky="W")
 
         self.LogText = tkinter.Text(self, wrap="word", height=15, font=self.fontlog, padx=5, pady=5)
+        self.LogText.tag_config("normal", foreground="black")
         self.LogText.tag_config("warning", foreground="orange")
         self.LogText.tag_config("error", foreground="red")
         self.LogText.tag_config("c", justify="center")
@@ -99,8 +100,8 @@ class MyApp(tkinter.Frame):
         self.LogText.tag_config("space_below", spacing3=25)
 
 #        self.LogText.tag_config("ind", lmargin1=10)
-        self.LogText.insert("end", "Welcome to SincSopht\n", ("c", "u", "space_below"))
-#        self.LogText.insert("end", "\n\n\n")
+        self.LogText.insert("end", "Welcome to SincSopht", ("c", "u", "space_below"))
+        self.LogText.insert("end", "\n", ("normal"))
         self.LogText.configure(state="disable")
         self.LogText.grid(row=5, column=1, columnspan=1, rowspan=1, sticky="n"+"s")
 

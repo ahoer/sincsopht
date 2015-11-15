@@ -2,6 +2,7 @@ import os
 import tkinter
 from myapp import MyApp
 from systemdata import SystemData
+from filelogger import FileLogger
 
 __author__ = 'fernass daoud'
 
@@ -13,4 +14,5 @@ if not parameters.nogui:
     app = MyApp(parameters, root)
     app.mainloop()
 else:
-    parameters.run()
+    log = FileLogger(parameters.verbose)
+    parameters.run(log)

@@ -123,11 +123,12 @@ class Tree:
         dir.set_available()
         try:
             shutil.copytree(dir.path, dest)
+            message = "Copy directory {} incl. all subdirectories".format(dir.name)
+            self.log.emit(message, "normal")
         except FileExistsError:
             message = "Directory {} exists. Do nothing".format(dir.name)
-            print(message)
-            self.log.setLevel(logging.INFO)
-            self.log.emit(message)
+#            print("info: ", message)
+            self.log.emit(message, "normal")
 
 ##########################################################
     def case_2_to_4(self, dir, local, root, parameters):
@@ -137,27 +138,34 @@ class Tree:
 
             if not file.available: # case 3
                 shutil.copy(src, dest)
+                message = "Copy not available file from {} to {} ".format(src, dest)
+                self.log.emit(message, "normal")
             elif file.available: # case 4
-                if file.newer == None:
+                if file.newer is None:
                     pass
-                elif file.newer: # case 4.1
+                elif file.newer:  # case 4.1
                     shutil.copy(src, dest)
+                    message = "Copy file from {} to {} ".format(src, dest)
+                    self.log.emit(message, "normal")
                     file.newer = False
                     file.target_file.newer = False
-                elif not file.newer: # case 4.2
-                    if parameters.bidirectional: # case 4.2.1
+                elif not file.newer:  # case 4.2
+                    if parameters.bidirectional:  # case 4.2.1
                         shutil.copy(dest, src)
+                        message = "Copy file from {} to {} ".format(dest, src)
+                        self.log.emit(message, "normal")
                         file.newer = False
                         file.target_file.newer = False
-                    elif parameters.bidirectional and parameters.force: # case 4.2.2.1
-                        shutil.copy(dest, src)
+                    elif not parameters.bidirectional and parameters.force: # case 4.2.2.1
+                        shutil.copy(src, dest)
+                        message = "Copy older file from {} to {} ".format(src, dest)
+                        self.log.emit(message, "warning")
                         file.newer = False
                         file.target_file.newer = False
-                    else: # case 4.2.2.2
-                        message = "target file:{}, is newer than source file:{}".format(dest,src)
-                        print(message)
-                        self.log.setLevel(logging.WARNING)
-                        self.log.emit(message)
+                    elif not parameters.bidirectional and not parameters.force: # case 4.2.2.2
+                        message = "Nothing copied. Target file:{}, is newer than source file:{}".format(dest, src)
+#                        print("warning: ", message)
+                        self.log.emit(message, "warning")
 
 
 ##########################################################
@@ -166,25 +174,25 @@ class Tree:
         src = os.path.join(self.root, local).replace("\\","/")
         if parameters.delete:
             shutil.rmtree(dest)
+            message = "Deleting directory {}".format(dest)
+            self.log.emit(message, "warning")
         elif parameters.bidirectional:
             try:
                 shutil.copytree(dest, src)
+                message = "Copy directory from {} to {}".format(dest, src)
+                self.log.emit(message, "normal")
             except FileExistsError:
                 message = "Directory {} is already available. Do nothing.".format(src)
-                print(message)
-                self.log.setLevel(logging.INFO)
-                self.log.emit(message)
+#                print("info: ",message)
+                self.log.emit(message, "normal")
             except:
                 message = "Problem with copying the directory {}. Stop.".format(src)
-                print(message)
-                self.log.setLevel(logging.ERROR)
+#                print("error: ", message)
                 self.log.emit(message, "error")
-
         else:
-            message = "Directory {} is available only on target.".format(dest)
-            print(message)
-            self.log.setLevel(logging.INFO)
-            self.log.emit(message, "warning")
+            message = "Copy nothing. Directory {} is available only on target.".format(dest)
+#            print("warning: ", message)
+            self.log.emit(message, "normal")
 
 ##########################################################
     def case_6_to_8(self, tdir, local, troot, parameters):
@@ -192,15 +200,15 @@ class Tree:
             dest = os.path.join(tdir.path, file.name).replace("\\","/")
             src = dest.replace(troot, self.root)
 
-            if not file.available: # case 7
-                if parameters.delete: # case 7.1
+            if not file.available:  # case 7
+                if parameters.delete:  # case 7.1
                     os.remove(dest)
+                    message = "Delete target file {}.".format(dest)
+                    self.log.emit(message, "warning")
                 elif parameters.bidirectional: # case 7.2
                     shutil.copy(dest, src)
+                    message = "Copy file from {} to {}".format(dest, src)
+                    self.log.emit(message, "normal")
                 elif not parameters.delete and not parameters.bidirectional: # case 7.3
-                    message = "The file {} is available only on target.".format(dest)
-                    print(message)
-                    self.log.setLevel(logging.INFO)
+                    message = "File {} is available only on target.".format(dest)
                     self.log.emit(message, "warning")
-
-
