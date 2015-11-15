@@ -21,3 +21,5 @@ class FileLogger():
             self.logger.warning(record)
         elif tag=="error":
             self.logger.error(record)
+        elif tag=="success":
+            self.logger.info(record)

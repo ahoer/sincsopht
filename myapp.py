@@ -95,6 +95,7 @@ class MyApp(tkinter.Frame):
         self.LogText.tag_config("normal", foreground="black")
         self.LogText.tag_config("warning", foreground="orange")
         self.LogText.tag_config("error", foreground="red")
+        self.LogText.tag_config("success", foreground="green")
         self.LogText.tag_config("c", justify="center")
         self.LogText.tag_config("u", underline=True)
         self.LogText.tag_config("space_below", spacing3=25)
@@ -117,7 +118,7 @@ class MyApp(tkinter.Frame):
         self.LogScrollX["command"] = self.LogScrollXHandler
         self.LogScrollX.grid(row=6,column=1, sticky="n"+"e"+"w")
 
-        self.LogWidget = WidgetLogger(self.LogText)
+        self.LogWidget = WidgetLogger(self.LogText, self.parameters.verbose)
 
 ###########################################
     def createBindings(self):

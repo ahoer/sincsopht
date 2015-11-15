@@ -3,8 +3,9 @@ import time
 import tkinter as tk
 
 class WidgetLogger(logging.Handler):
-    def __init__(self, widget):
+    def __init__(self, widget, verbose):
         logging.Handler.__init__(self)
+        self.verbose = verbose
 #        frm = logging.Formatter("[{levelname:8}], {asctime}: {message}", "%d.%m.%Y", style="{")
 #        self.setFormatter(frm)
         self.setLevel(logging.INFO)
@@ -14,7 +15,7 @@ class WidgetLogger(logging.Handler):
     def emit(self, record, tag=""):
         self.widget.config(state='normal')
         # Append message (record) to the widget
-        if tag=="normal":
+        if tag=="normal" and self.verbose:
             message = "[INFO    ]: " + time.strftime("%d.%m.%Y %H:%M:%S - ") + record
             self.widget.insert(tk.END, message + '\n', tag)
         elif tag=="warning":
@@ -23,7 +24,11 @@ class WidgetLogger(logging.Handler):
         elif tag=="error":
             message = "[ERROR   ]: " + time.strftime("%d.%m.%Y %H:%M:%S - ") + record
             self.widget.insert(tk.END, record + '\n', tag)
-        else:
+        elif tag=="success":
+            message = "[SUCCESS   ]: " + time.strftime("%d.%m.%Y %H:%M:%S - ") + record
             self.widget.insert(tk.END, record + '\n', tag)
+#        else:
+#            self.widget.insert(tk.END, record + '\n', tag)
+
         self.widget.see(tk.END)  # Scroll to the bottom
         self.widget.config(state='disabled')
