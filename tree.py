@@ -173,9 +173,16 @@ class Tree:
         dest = os.path.join(troot, local).replace("\\","/")
         src = os.path.join(self.root, local).replace("\\","/")
         if parameters.delete:
-            shutil.rmtree(dest)
-            message = "Deleting directory {}".format(dest)
-            self.log.emit(message, "warning")
+            try:
+                shutil.rmtree(dest)
+                message = "Deleting directory {}".format(dest)
+                self.log.emit(message, "warning")
+            except FileNotFoundError:
+                message = "Directory {} already deleted".format(dest)
+                self.log.emit(message, "normal")
+            except:
+                message = "Directory {} not found".format(dest)
+                self.log.emit(message, "error")
         elif parameters.bidirectional:
             try:
                 shutil.copytree(dest, src)
