@@ -2,10 +2,11 @@ import tkinter
 from tkinter import filedialog
 from tkinter import messagebox
 import tkinter.font as tkfont
-from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 from widgetlogger import WidgetLogger
 
 __author__ = 'fernass daoud'
+
 
 class MyApp(tkinter.Frame):
     def __init__(self, parameters, master=None):
@@ -14,13 +15,13 @@ class MyApp(tkinter.Frame):
 
         self.font_main = tkfont.Font(family="Arial", size=10, weight="bold", slant="italic")
         self.fontlog = tkfont.Font(family="FixedSys", size=4)
-        master.resizable(width=False, height=True)
+#        master.resizable(width=False, height=True)
         master.geometry("970x500+200+100")
 
 
-        self.imageOpenDir_ = Image.open("C:\\Users\\ferna\\PycharmProjects\\tkinter_test\\openfolder.ico").\
-            resize((25,25))
-        self.imageOpenDir = ImageTk.PhotoImage(self.imageOpenDir_)
+#        self.imageOpenDir_ = Image.open("C:\\Users\\ferna\\PycharmProjects\\tkinter_test\\openfolder.ico").\
+#            resize((25,25))
+#        self.imageOpenDir = ImageTk.PhotoImage(self.imageOpenDir_)
 #        master.geometry("{}x{}".format(800, 500))
 #        master.minsize(width=500, height=500)
 #        master.maxsize(width=500, height=500)
@@ -34,30 +35,30 @@ class MyApp(tkinter.Frame):
 ###########################################
     def createWidget(self):
         self.SourceLabel = tkinter.Label(self, text="Source Directory")
-        self.SourceLabel.grid(row=0,column=0,padx=5,pady=5)
+        self.SourceLabel.grid(row=0, column=0, padx=5, pady=5)
         self.TargetLabel = tkinter.Label(self, text="Target Directory")
-        self.TargetLabel.grid(row=1,column=0,padx=5,pady=5)
+        self.TargetLabel.grid(row=1, column=0, padx=5, pady=5)
         self.SourceString = tkinter.StringVar(self, "Please choose source directory")
         self.TargetString = tkinter.StringVar(self, "Please choose target directory")
         self.SourceEntry = tkinter.Entry(self, textvariable=self.SourceString, width=75, font=self.font_main,
                                          insertbackground="red")
-        self.SourceEntry.grid(row=0, column=1,padx=5,pady=5)
+        self.SourceEntry.grid(row=0, column=1, padx=5, pady=5)
         self.TargetEntry = tkinter.Entry(self, textvariable=self.TargetString, width=75, font=self.font_main,
                                          insertbackground="red")
-        self.TargetEntry.grid(row=1, column=1,padx=5,pady=5)
+        self.TargetEntry.grid(row=1, column=1, padx=5, pady=5)
 
-        self.SourceDirectory = tkinter.Button(self,image=self.imageOpenDir, command=self.sdHandler)
-        self.SourceDirectory.grid(row=0, column=2,padx=5,pady=5)
-        self.TargetDirectory = tkinter.Button(self,image=self.imageOpenDir, command=self.tdHandler)\
+        self.SourceDirectory = tkinter.Button(self, command=self.sdHandler)
+        self.SourceDirectory.grid(row=0, column=2, padx=5, pady=5)
+        self.TargetDirectory = tkinter.Button(self, command=self.tdHandler)\
             .grid(row=1, column=2,padx=5,pady=5)
-        self.Placeholder = tkinter.Label(self, text="", width=5).grid(row=0, column=3,columnspan=1,rowspan=1)
+        self.Placeholder = tkinter.Label(self, text="", width=5).grid(row=0, column=3, columnspan=1, rowspan=1)
         self.SyncButton = tkinter.Button(self,
                                          text="Synchronisation",
                                          command=self.syncHandler,
                                          height=5,
                                          width=15,
                                          bg="#b7feea",
-                                         relief = "groove",
+                                         relief="groove",
                                          borderwidth=5,
                                          cursor="pirate",
                                          activeforeground="white",
@@ -67,32 +68,32 @@ class MyApp(tkinter.Frame):
                                     text="Close",
                                     width=15,
                                     command=self.close,
-                                    relief = "groove",
+                                    relief="groove",
                                     borderwidth=5,
                                     cursor="x_cursor")
         self.Close.grid(row=2,column=4,columnspan=2, padx=5, pady=5)
 # Checkbuttons
         self.BidirectCheck = tkinter.Checkbutton(self)
-        self.BidirectBool = tkinter.BooleanVar(self,value=True)
+        self.BidirectBool = tkinter.BooleanVar(self, value=True)
         self.BidirectCheck["variable"] = self.BidirectBool
         self.BidirectCheck["text"] ="bidirectional"
         self.BidirectCheck["command"] = self.bidirectHandler
         self.BidirectCheck.grid(row=2, column=0, sticky="W")
         self.DeleteCheck = tkinter.Checkbutton(self)
-        self.DeleteBool = tkinter.BooleanVar(self,value=False)
+        self.DeleteBool = tkinter.BooleanVar(self, value=False)
         self.DeleteCheck["variable"] = self.DeleteBool
         self.DeleteCheck["text"] ="delete"
         self.DeleteCheck["command"] = self.deleteHandler
         self.DeleteCheck.grid(row=3, column=0, sticky="W")
         self.ForceCheck = tkinter.Checkbutton(self)
-        self.ForceBool = tkinter.BooleanVar(self,value=False)
+        self.ForceBool = tkinter.BooleanVar(self, value=False)
         self.ForceCheck["variable"] = self.ForceBool
         self.ForceCheck["text"] ="force"
         self.ForceCheck["command"] = self.forceHandler
         self.ForceCheck.grid(row=4, column=0, sticky="W")
 
         self.VerboseCheck = tkinter.Checkbutton(self)
-        self.VerboseBool = tkinter.BooleanVar(self,value=False)
+        self.VerboseBool = tkinter.BooleanVar(self, value=False)
         self.VerboseCheck["variable"] = self.VerboseBool
         self.VerboseCheck["text"] ="verbose"
         self.VerboseCheck["command"] = self.verboseHandler
@@ -109,7 +110,7 @@ class MyApp(tkinter.Frame):
 
 #        self.LogText.tag_config("ind", lmargin1=10)
         self.LogText.insert("end", "Welcome to SincSopht", ("c", "u", "space_below"))
-        self.LogText.insert("end", "\n", ("normal"))
+        self.LogText.insert("end", "\n", "normal")
         self.LogText.configure(state="disable")
         self.LogText.grid(row=6, column=1, columnspan=1, rowspan=1, sticky="n"+"s")
 
@@ -123,15 +124,13 @@ class MyApp(tkinter.Frame):
         self.LogText["xscrollcommand"] = self.LogScrollX.set
 #        self.LogScroll["command"] = self.LogText.yview
         self.LogScrollX["command"] = self.LogScrollXHandler
-        self.LogScrollX.grid(row=7,column=1, sticky="n"+"e"+"w")
+        self.LogScrollX.grid(row=7, column=1, sticky="n"+"e"+"w")
 
         self.LogWidget = WidgetLogger(self.LogText, self.parameters.verbose)
 
 ###########################################
     def createBindings(self):
         self.SyncButton.bind("<Shift-ButtonPress-1>", self.SyncShiftButton_1)
-
-
 
 ############## HANDLER ####################
     def syncHandler(self):
