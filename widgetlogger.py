@@ -12,10 +12,10 @@ class WidgetLogger(logging.Handler):
         self.widget = widget
         self.widget.config(state='disabled')
 
-    def emit(self, record, parameters, tag=""):
+    def emit(self, record, verbose, tag=""):
         self.widget.config(state='normal')
         # Append message (record) to the widget
-        if tag=="normal" and parameters.verbose:
+        if tag=="normal" and verbose:
             message = "[INFO    ]: " + time.strftime("%d.%m.%Y %H:%M:%S - ") + record
             self.widget.insert(tk.END, message + '\n', tag)
         elif tag=="warning":
