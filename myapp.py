@@ -91,6 +91,13 @@ class MyApp(tkinter.Frame):
         self.ForceCheck["command"] = self.forceHandler
         self.ForceCheck.grid(row=4, column=0, sticky="W")
 
+        self.VerboseCheck = tkinter.Checkbutton(self)
+        self.VerboseBool = tkinter.BooleanVar(self,value=False)
+        self.VerboseCheck["variable"] = self.VerboseBool
+        self.VerboseCheck["text"] ="verbose"
+        self.VerboseCheck["command"] = self.verboseHandler
+        self.VerboseCheck.grid(row=5, column=0, sticky="W")
+
         self.LogText = tkinter.Text(self, wrap="word", height=15, font=self.fontlog, padx=5, pady=5)
         self.LogText.tag_config("normal", foreground="black")
         self.LogText.tag_config("warning", foreground="orange")
@@ -104,19 +111,19 @@ class MyApp(tkinter.Frame):
         self.LogText.insert("end", "Welcome to SincSopht", ("c", "u", "space_below"))
         self.LogText.insert("end", "\n", ("normal"))
         self.LogText.configure(state="disable")
-        self.LogText.grid(row=5, column=1, columnspan=1, rowspan=1, sticky="n"+"s")
+        self.LogText.grid(row=6, column=1, columnspan=1, rowspan=1, sticky="n"+"s")
 
         self.LogScrollY = tkinter.Scrollbar(self, relief="groove", orient="vertical")
         self.LogText["yscrollcommand"] = self.LogScrollY.set
 #        self.LogScroll["command"] = self.LogText.yview
         self.LogScrollY["command"] = self.LogScrollYHandler
-        self.LogScrollY.grid(row=5,column=2, sticky="n"+"s"+"w")
+        self.LogScrollY.grid(row=6,column=2, sticky="n"+"s"+"w")
 
         self.LogScrollX = tkinter.Scrollbar(self, relief="groove", orient="horizontal")
         self.LogText["xscrollcommand"] = self.LogScrollX.set
 #        self.LogScroll["command"] = self.LogText.yview
         self.LogScrollX["command"] = self.LogScrollXHandler
-        self.LogScrollX.grid(row=6,column=1, sticky="n"+"e"+"w")
+        self.LogScrollX.grid(row=7,column=1, sticky="n"+"e"+"w")
 
         self.LogWidget = WidgetLogger(self.LogText, self.parameters.verbose)
 
@@ -135,6 +142,7 @@ class MyApp(tkinter.Frame):
             self.parameters.bidirectional = self.BidirectBool.get()
             self.parameters.force = self.ForceBool.get()
             self.parameters.delete = self.DeleteBool.get()
+            self.parameters.verbose = self.VerboseBool.get()
 
             self.parameters.run(self.LogWidget)
 
@@ -172,6 +180,9 @@ class MyApp(tkinter.Frame):
     def forceHandler(self):
         if self.ForceBool:
             self.BidirectCheck.deselect()
+############## HANDLER ####################
+    def verboseHandler(self):
+        pass
 #            self.BidirectBool.set(False)
 ############## HANDLER ####################
 
