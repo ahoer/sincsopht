@@ -105,4 +105,4 @@ class SystemData:
 #8. if file on target is available on source: this case is covered by Way 1 (no coding required).
 
         Source.sync_with(Target, self, log)
-        log.emit("Synchronisation Successful!", "success")
+        log.emit("Synchronisation Successful!", self.verbose, "success")
