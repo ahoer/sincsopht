@@ -7,8 +7,8 @@ __author__ = 'fernass daoud'
 class File:
     def __init__(self, path, e_file):
         self.path = path
-        self.available = False # flag to be set during comparison of files in directory objects
-        self.newer = False # flag to indicate if source or target file is newer
+        self.available = False  # flag to be set during comparison of files in directory objects
+        self.newer = False  # flag to indicate if source or target file is newer
 
 #        (self.mode, self.ino, self.dev, self.nlink, self.uid, self.gid, self.size, self.atime, self.mtime, self.ctime) \
 #            = os.stat(e_file)

@@ -2,6 +2,7 @@ import logging
 import time
 import tkinter as tk
 
+
 class WidgetLogger(logging.Handler):
     def __init__(self, widget, verbose):
         logging.Handler.__init__(self)
@@ -18,13 +19,13 @@ class WidgetLogger(logging.Handler):
         if tag=="normal" and verbose:
             message = "[INFO    ]: " + time.strftime("%d.%m.%Y %H:%M:%S - ") + record
             self.widget.insert(tk.END, message + '\n', tag)
-        elif tag=="warning":
+        elif tag == "warning":
             message = "[WARNING ]: " + time.strftime("%d.%m.%Y %H:%M:%S - ") + record
             self.widget.insert(tk.END, message + '\n', tag)
-        elif tag=="error":
+        elif tag == "error":
             message = "[ERROR   ]: " + time.strftime("%d.%m.%Y %H:%M:%S - ") + record
             self.widget.insert(tk.END, record + '\n', tag)
-        elif tag=="success":
+        elif tag == "success":
             message = "[SUCCESS   ]: " + time.strftime("%d.%m.%Y %H:%M:%S - ") + record
             self.widget.insert(tk.END, record + '\n', tag)
 #        else:

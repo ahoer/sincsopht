@@ -1,6 +1,7 @@
 __author__ = 'fernass daoud'
 import sys
 
+
 class TreeStat():
     def __init__(self):
         self.levels = [0]
@@ -15,7 +16,7 @@ class TreeStat():
 ###########################################
     def check(self, data):
         last_level = len(self.levels)
-        current_level = self.get_level(data[0].replace("\\","/"))
+        current_level = self.get_level(data[0].replace("\\", "/"))
 
         if last_level < current_level:
             self.levels.append(1)

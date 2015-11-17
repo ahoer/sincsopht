@@ -1,5 +1,6 @@
 import logging
 
+
 class FileLogger():
     def __init__(self, verbose):
 #        super().__init__(filename="sincsopht.log")
@@ -15,11 +16,11 @@ class FileLogger():
 
     def emit(self, record, verbose, tag=""):
         # Append message (record) to the file
-        if tag=="normal":
+        if tag == "normal":
             self.logger.info(record)
-        elif tag=="warning":
+        elif tag == "warning":
             self.logger.warning(record)
-        elif tag=="error":
+        elif tag == "error":
             self.logger.error(record)
-        elif tag=="success":
+        elif tag == "success":
             self.logger.info(record)
