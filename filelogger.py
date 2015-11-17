@@ -13,7 +13,7 @@ class FileLogger():
         else:
             self.logger.setLevel(logging.WARNING)
 
-    def emit(self, record, tag=""):
+    def emit(self, record, parameters, tag=""):
         # Append message (record) to the file
         if tag=="normal":
             self.logger.info(record)
