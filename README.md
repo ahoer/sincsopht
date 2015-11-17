@@ -1,3 +1,0 @@
-# sincsopht
-Syncronisation Software
-Servus
