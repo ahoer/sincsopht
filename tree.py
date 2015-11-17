@@ -3,7 +3,6 @@ from treestat import TreeStat
 from directory import Directory
 import os
 import shutil
-import logging
 
 __author__ = 'fernass daoud'
 
@@ -22,7 +21,6 @@ class Tree:
 #        self.levels = len(treestatistics.levels) * [Level]
         self.levels = list()
         for lvl in treestatistics.levels:
-#            i_size = treestatistics.levels[index]
             i_level = Level(lvl)
             self.levels.append(i_level)
             index += 1
@@ -31,13 +29,13 @@ class Tree:
     def fill(self):
         os.chdir(self.root)
         for t in os.walk("."):
-            lvl = self.get_level(t[0].replace("\\","/"))
+            lvl = self.get_level(t[0].replace("\\", "/"))
 # each level contains a list of the hosted directories. Each of these directories contains ONLY files.
 # It mustn't know about subdirectories. These are contained in the other levels objects
             i_level = self.levels[lvl - 1]
-            local = t[0].replace("\\","/")
-            path = os.path.join(self.root, os.path.abspath(local)).replace("\\","/")
-            path = path.replace("\\","/")
+            local = t[0].replace("\\", "/")
+            path = os.path.join(self.root, os.path.abspath(local)).replace("\\", "/")
+            path = path.replace("\\", "/")
             i_dir = Directory(path, local, t[2])
             i_level.directories.append(i_dir)
 
@@ -50,7 +48,7 @@ class Tree:
 
 ##########################################################
     def check_level(self, index):
-        if index <len(self.levels):
+        if index < len(self.levels):
             return self.levels[index]
         else:
             return None
@@ -62,7 +60,7 @@ class Tree:
         for lvl in self.levels:
             index += 1
             tlvl = target.check_level(index)
-            if tlvl == None:
+            if tlvl is None:
                 self.set_level(index, False)
                 continue
 
@@ -74,6 +72,7 @@ class Tree:
                         for file in dir.files:
                             file.check_attrib(tdir.files)
                         break
+
 ##########################################################
     def set_level(self, index, flag):
         self.levels[index].set_directories(flag)
@@ -84,7 +83,7 @@ class Tree:
 # Way 1: Source to Target
         index = 0
         for lvl in self.levels:
-            tlvl = target.check_level(index) # if target level is not availabe None is returned
+            tlvl = target.check_level(index)  # if target level is not available None is returned
             index += 1
             for dir in lvl.directories:
 # This solves the problem of the preceding ./ (linux) or .\ (win) in the local path
@@ -93,9 +92,9 @@ class Tree:
                 else:
                     local = dir.name
 
-                if not dir.available: # Case 1
-                   self.case_1(dir, local, target.root)
-                else: # Case 2
+                if not dir.available:  # Case 1
+                    self.case_1(dir, local, target.root, parameters)
+                else:  # Case 2
                     self.case_2_to_4(dir, local, target.root, parameters)
 
 # Way 2: Target to Source
@@ -110,16 +109,16 @@ class Tree:
                 else:
                     local = tdir.name
 
-                if not tdir.available: # Case 5
-                   self.case_5(tdir, local, target.root, parameters)
-                else: # Case 6
+                if not tdir.available:  # Case 5
+                    self.case_5(tdir, local, target.root, parameters)
+                else:  # Case 6
                     self.case_6_to_8(tdir, local, target.root, parameters)
 
 
 
 ##########################################################
-    def case_1(self, dir, local, root):
-        dest = os.path.join(root, local).replace("\\","/")
+    def case_1(self, dir, local, root, parameters):
+        dest = os.path.join(root, local).replace("\\", "/")
         dir.set_available()
         try:
             shutil.copytree(dir.path, dest)
@@ -133,10 +132,10 @@ class Tree:
 ##########################################################
     def case_2_to_4(self, dir, local, root, parameters):
         for file in dir.files:
-            dest = os.path.join(root, local, file.name).replace("\\","/")
-            src = os.path.join(dir.path, file.name).replace("\\","/")
+            dest = os.path.join(root, local, file.name).replace("\\", "/")
+            src = os.path.join(dir.path, file.name).replace("\\", "/")
 
-            if not file.available: # case 3
+            if not file.available:  # case 3
                 shutil.copy(src, dest)
                 message = "Copy not available file from {} to {} ".format(src, dest)
                 self.log.emit(message, parameters, "normal")
@@ -156,13 +155,13 @@ class Tree:
                         self.log.emit(message, parameters, "normal")
                         file.newer = False
                         file.target_file.newer = False
-                    elif not parameters.bidirectional and parameters.force: # case 4.2.2.1
+                    elif not parameters.bidirectional and parameters.force:  # case 4.2.2.1
                         shutil.copy(src, dest)
                         message = "Copy older file from {} to {} ".format(src, dest)
                         self.log.emit(message, parameters, "warning")
                         file.newer = False
                         file.target_file.newer = False
-                    elif not parameters.bidirectional and not parameters.force: # case 4.2.2.2
+                    elif not parameters.bidirectional and not parameters.force:  # case 4.2.2.2
                         message = "Nothing copied. Target file:{}, is newer than source file:{}".format(dest, src)
 #                        print("warning: ", message)
                         self.log.emit(message, parameters, "warning")
@@ -170,8 +169,8 @@ class Tree:
 
 ##########################################################
     def case_5(self, tdir, local, troot, parameters):
-        dest = os.path.join(troot, local).replace("\\","/")
-        src = os.path.join(self.root, local).replace("\\","/")
+        dest = os.path.join(troot, local).replace("\\", "/")
+        src = os.path.join(self.root, local).replace("\\", "/")
         if parameters.delete:
             try:
                 shutil.rmtree(dest)
@@ -204,7 +203,7 @@ class Tree:
 ##########################################################
     def case_6_to_8(self, tdir, local, troot, parameters):
         for file in tdir.files:
-            dest = os.path.join(tdir.path, file.name).replace("\\","/")
+            dest = os.path.join(tdir.path, file.name).replace("\\", "/")
             src = dest.replace(troot, self.root)
 
             if not file.available:  # case 7
@@ -212,10 +211,10 @@ class Tree:
                     os.remove(dest)
                     message = "Delete target file {}.".format(dest)
                     self.log.emit(message, parameters, "warning")
-                elif parameters.bidirectional: # case 7.2
+                elif parameters.bidirectional:  # case 7.2
                     shutil.copy(dest, src)
                     message = "Copy file from {} to {}".format(dest, src)
                     self.log.emit(message, parameters, "normal")
-                elif not parameters.delete and not parameters.bidirectional: # case 7.3
+                elif not parameters.delete and not parameters.bidirectional:  # case 7.3
                     message = "File {} is available only on target.".format(dest)
                     self.log.emit(message, parameters, "warning")
