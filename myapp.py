@@ -2,7 +2,7 @@ import tkinter
 from tkinter import filedialog
 from tkinter import messagebox
 import tkinter.font as tkfont
-#from PIL import Image, ImageTk
+from PIL import Image, ImageTk
 from widgetlogger import WidgetLogger
 
 __author__ = 'fernass daoud'
@@ -19,14 +19,13 @@ class MyApp(tkinter.Frame):
         master.geometry("970x500+200+100")
 
 
-#        self.imageOpenDir_ = Image.open("C:\\Users\\ferna\\PycharmProjects\\tkinter_test\\openfolder.ico").\
-#            resize((25,25))
-#        self.imageOpenDir = ImageTk.PhotoImage(self.imageOpenDir_)
+        self.imageOpenDir_ = Image.open("C:\\Users\\ferna\\PycharmProjects\\tkinter_test\\openfolder.ico").\
+            resize((25,25))
+        self.imageOpenDir = ImageTk.PhotoImage(self.imageOpenDir_)
 #        master.geometry("{}x{}".format(800, 500))
 #        master.minsize(width=500, height=500)
 #        master.maxsize(width=500, height=500)
 
-#        self.pack()
         self.grid()
         self.createWidget()
         self.createBindings()
@@ -47,9 +46,11 @@ class MyApp(tkinter.Frame):
                                          insertbackground="red")
         self.TargetEntry.grid(row=1, column=1, padx=5, pady=5)
 
-        self.SourceDirectory = tkinter.Button(self, command=self.sdHandler)
+        self.directory_image = Image.open("./images/open-file-icon.png").resize((60,40))
+        self.directory_image_tk = ImageTk.PhotoImage(self.directory_image)
+        self.SourceDirectory = tkinter.Button(self, image=self.directory_image_tk, command=self.sdHandler)
         self.SourceDirectory.grid(row=0, column=2, padx=5, pady=5)
-        self.TargetDirectory = tkinter.Button(self, command=self.tdHandler)\
+        self.TargetDirectory = tkinter.Button(self, image=self.directory_image_tk, command=self.tdHandler)\
             .grid(row=1, column=2,padx=5,pady=5)
         self.Placeholder = tkinter.Label(self, text="", width=5).grid(row=0, column=3, columnspan=1, rowspan=1)
         self.SyncButton = tkinter.Button(self,
