@@ -14,14 +14,14 @@ class MyApp(tkinter.Frame):
         self.parameters = parameters
 
         self.font_main = tkfont.Font(family="Arial", size=10, weight="bold", slant="italic")
-        self.fontlog = tkfont.Font(family="FixedSys", size=4)
+        self.fontlog = tkfont.Font(family="FixedSys", size=8)
 #        master.resizable(width=False, height=True)
         master.geometry("970x500+200+100")
 
 
-        self.imageOpenDir_ = Image.open("C:\\Users\\ferna\\PycharmProjects\\tkinter_test\\openfolder.ico").\
-            resize((25,25))
-        self.imageOpenDir = ImageTk.PhotoImage(self.imageOpenDir_)
+        self.directory_image = Image.open("./images/open-file-icon.png").resize((40,25))
+        self.directory_image_tk = ImageTk.PhotoImage(self.directory_image)
+
 #        master.geometry("{}x{}".format(800, 500))
 #        master.minsize(width=500, height=500)
 #        master.maxsize(width=500, height=500)
@@ -46,8 +46,6 @@ class MyApp(tkinter.Frame):
                                          insertbackground="red")
         self.TargetEntry.grid(row=1, column=1, padx=5, pady=5)
 
-        self.directory_image = Image.open("./images/open-file-icon.png").resize((60,40))
-        self.directory_image_tk = ImageTk.PhotoImage(self.directory_image)
         self.SourceDirectory = tkinter.Button(self, image=self.directory_image_tk, command=self.sdHandler)
         self.SourceDirectory.grid(row=0, column=2, padx=5, pady=5)
         self.TargetDirectory = tkinter.Button(self, image=self.directory_image_tk, command=self.tdHandler)\
@@ -99,7 +97,7 @@ class MyApp(tkinter.Frame):
         self.VerboseCheck["command"] = self.verboseHandler
         self.VerboseCheck.grid(row=5, column=0, sticky="W")
 
-        self.LogText = tkinter.Text(self, wrap="word", width=100, height=15, font=self.fontlog, padx=5, pady=5)
+        self.LogText = tkinter.Text(self, wrap="word", height=15, font=self.fontlog, padx=5, pady=5)
         self.LogText.tag_config("normal", foreground="black")
         self.LogText.tag_config("warning", foreground="orange")
         self.LogText.tag_config("error", foreground="red")
@@ -134,16 +132,16 @@ class MyApp(tkinter.Frame):
 
 ############## HANDLER ####################
     def syncHandler(self):
-        YES = messagebox.askyesno(title="It's getting serious!", message="Ready for Synchronisation")
-        if YES:
-            self.parameters.source = self.SourceString.get()
-            self.parameters.target = self.TargetString.get()
-            self.parameters.bidirectional = self.BidirectBool.get()
-            self.parameters.force = self.ForceBool.get()
-            self.parameters.delete = self.DeleteBool.get()
-            self.parameters.verbose = self.VerboseBool.get()
+#        YES = messagebox.askyesno(title="It's getting serious!", message="Ready for Synchronisation")
+#        if YES:
+        self.parameters.source = self.SourceString.get()
+        self.parameters.target = self.TargetString.get()
+        self.parameters.bidirectional = self.BidirectBool.get()
+        self.parameters.force = self.ForceBool.get()
+        self.parameters.delete = self.DeleteBool.get()
+        self.parameters.verbose = self.VerboseBool.get()
 
-            self.parameters.run(self.LogWidget)
+        self.parameters.run(self.LogWidget)
 
 ############## HANDLER ####################
     def SyncShiftButton_1(self, event):

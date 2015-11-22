@@ -145,7 +145,7 @@ class Tree:
                 elif file.newer:  # case 4.1
                     shutil.copy(src, dest)
                     message = "Copy file from {} to {} ".format(src, dest)
-                    self.log.emit(message, "normal")
+                    self.log.emit(message, parameters.verbose, "normal")
                     file.newer = False
                     file.target_file.newer = False
                 elif not file.newer:  # case 4.2
@@ -171,7 +171,7 @@ class Tree:
     def case_5(self, tdir, local, troot, parameters):
         dest = os.path.join(troot, local).replace("\\", "/")
         src = os.path.join(self.root, local).replace("\\", "/")
-        if parameters.delete:
+        if parameters.delete:  # case 5.1
             try:
                 shutil.rmtree(dest)
                 message = "Deleting directory {}".format(dest)
@@ -182,7 +182,7 @@ class Tree:
             except:
                 message = "Directory {} not found".format(dest)
                 self.log.emit(message, parameters.verbose, "error")
-        elif parameters.bidirectional:
+        elif parameters.bidirectional:  # case 5.2
             try:
                 shutil.copytree(dest, src)
                 message = "Copy directory from {} to {}".format(dest, src)
@@ -195,7 +195,7 @@ class Tree:
                 message = "Problem with copying the directory {}. Stop.".format(src)
 #                print("error: ", message)
                 self.log.emit(message, parameters.verbose, "error")
-        else:
+        else:  # case 5.3
             message = "Copy nothing. Directory {} is available only on target.".format(dest)
 #            print("warning: ", message)
             self.log.emit(message, parameters.verbose, "normal")
@@ -210,11 +210,11 @@ class Tree:
                 if parameters.delete:  # case 7.1
                     os.remove(dest)
                     message = "Delete target file {}.".format(dest)
-                    self.log.emit(message, parameters, "warning")
+                    self.log.emit(message, parameters.verbose, "warning")
                 elif parameters.bidirectional:  # case 7.2
                     shutil.copy(dest, src)
                     message = "Copy file from {} to {}".format(dest, src)
-                    self.log.emit(message, parameters, "normal")
+                    self.log.emit(message, parameters.verbose, "normal")
                 elif not parameters.delete and not parameters.bidirectional:  # case 7.3
-                    message = "File {} is available only on target.".format(dest)
-                    self.log.emit(message, parameters, "warning")
+                    message = "Do Nothing. File {} is available only on target.".format(dest)
+                    self.log.emit(message, parameters.verbose, "warning")
