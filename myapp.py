@@ -69,8 +69,7 @@ class MyApp(tkinter.Frame):
                                     width=15,
                                     command=self.close,
                                     relief="groove",
-                                    borderwidth=5,
-                                    cursor="x_cursor")
+                                    borderwidth=5)
         self.Close.grid(row=2,column=4,columnspan=2, padx=5, pady=5)
 # Checkbuttons
         self.BidirectCheck = tkinter.Checkbutton(self)
@@ -99,7 +98,7 @@ class MyApp(tkinter.Frame):
         self.VerboseCheck["command"] = self.verboseHandler
         self.VerboseCheck.grid(row=5, column=0, sticky="W")
 
-        self.LogText = tkinter.Text(self, wrap="word", height=15, font=self.fontlog, padx=5, pady=5)
+        self.LogText = tkinter.Text(self, wrap="word", width=100, height=15, font=self.fontlog, padx=5, pady=5)
         self.LogText.tag_config("normal", foreground="black")
         self.LogText.tag_config("warning", foreground="orange")
         self.LogText.tag_config("error", foreground="red")
@@ -112,7 +111,7 @@ class MyApp(tkinter.Frame):
         self.LogText.insert("end", "Welcome to SincSopht", ("c", "u", "space_below"))
         self.LogText.insert("end", "\n", "normal")
         self.LogText.configure(state="disable")
-        self.LogText.grid(row=6, column=1, columnspan=1, rowspan=1, sticky="n"+"s")
+        self.LogText.grid(row=6, column=1, columnspan=1, rowspan=1, sticky="n"+"s"+"e"+"w")
 
         self.LogScrollY = tkinter.Scrollbar(self, relief="groove", orient="vertical")
         self.LogText["yscrollcommand"] = self.LogScrollY.set
