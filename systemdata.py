@@ -56,18 +56,24 @@ class SystemData:
 
 ##########################################################
     def check_path(self, path):
-        return os.path.exists(self.source)
+        return os.path.exists(path)
 
 ##########################################################
     def run(self, log):
         if not self.check_path(self.source):
-            messagebox.showerror("Source Not Available!", message="The directory {} is not available, or check permissions".
-                                 format(self.source))
-            return
+            log.emit("Source directory {} not available, or check permissions!".format(self.source), self.verbose, "error")
+            print("Error: Check sincsopht.log")
+            sys.exit()
         if not self.check_path(self.target):
+<<<<<<< HEAD
             messagebox.showerror("Target Not Available!", message="The directory {} is not available, or check permissions".
                                  format(self.target))
             return
+=======
+            log.emit("Target directory {} not available, or check permissions!".format(self.target), self.verbose, "error")
+            print("Error: Check sincsopht.log")
+            sys.exit()
+>>>>>>> 752e46e3fc41ff0d78abcfbad067a5ac717bccb4
 
         Source = Tree(self.source)
 # initialise the tree object, i.e. generate a tree with as much levels as required (as acquired the treestatistics)
@@ -119,4 +125,5 @@ class SystemData:
 #8. if file on target is available on source: this case is covered by Way 1 (no coding required).
 
         Source.sync_with(Target, self, log)
+        print("Success: Check sincsopht.log")
         log.emit("Synchronisation Successful!", self.verbose, "success")
