@@ -1,4 +1,5 @@
 import sys
+import os.path
 from argparse import ArgumentParser
 from tree import Tree
 
@@ -54,7 +55,20 @@ class SystemData:
             sys.exit(0)
 
 ##########################################################
+    def check_path(self, path):
+        return os.path.exists(self.source)
+
+##########################################################
     def run(self, log):
+        if not self.check_path(self.source):
+            messagebox.showerror("Source Not Available!", message="The directory {} is not available, or check permissions".
+                                 format(self.source))
+            return
+        if not self.check_path(self.target):
+            messagebox.showerror("Target Not Available!", message="The directory {} is not available, or check permissions".
+                                 format(self.target))
+            return 
+
         Source = Tree(self.source)
 # initialise the tree object, i.e. generate a tree with as much levels as required (as acquired the treestatistics)
 # and set the correct size of each level (attribute levels), i.e. the number of the directories of each
