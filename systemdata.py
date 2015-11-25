@@ -67,7 +67,7 @@ class SystemData:
         if not self.check_path(self.target):
             messagebox.showerror("Target Not Available!", message="The directory {} is not available, or check permissions".
                                  format(self.target))
-            return 
+            return
 
         Source = Tree(self.source)
 # initialise the tree object, i.e. generate a tree with as much levels as required (as acquired the treestatistics)
