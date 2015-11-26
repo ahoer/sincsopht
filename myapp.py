@@ -142,11 +142,11 @@ class MyApp(tkinter.Frame):
         self.parameters.verbose = self.VerboseBool.get()
 
         if not self.parameters.check_path(self.parameters.source):
-            messagebox.showerror("Source Not Available!", message="The directory {} is not available, or check permissions".
+            messagebox.showerror("Source Not Available!", message="The directory \"{}\" is not available, or check permissions".
                                  format(self.parameters.source))
             return
         if not self.parameters.check_path(self.parameters.target):
-            messagebox.showerror("Target Not Available!", message="The directory {} is not available, or check permissions".
+            messagebox.showerror("Target Not Available!", message="The directory \"{}\" is not available, or check permissions".
                                  format(self.parameters.target))
             return
         self.parameters.run(self.LogWidget)

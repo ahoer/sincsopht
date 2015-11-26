@@ -61,19 +61,13 @@ class SystemData:
 ##########################################################
     def run(self, log):
         if not self.check_path(self.source):
-            log.emit("Source directory {} not available, or check permissions!".format(self.source), self.verbose, "error")
+            log.emit("Source directory \"{}\" not available, or check permissions!".format(self.source), self.verbose, "error")
             print("Error: Check sincsopht.log")
             sys.exit()
         if not self.check_path(self.target):
-<<<<<<< HEAD
-            messagebox.showerror("Target Not Available!", message="The directory {} is not available, or check permissions".
-                                 format(self.target))
-            return
-=======
-            log.emit("Target directory {} not available, or check permissions!".format(self.target), self.verbose, "error")
+            log.emit("Target directory \"{}\" not available, or check permissions!".format(self.target), self.verbose, "error")
             print("Error: Check sincsopht.log")
             sys.exit()
->>>>>>> 752e46e3fc41ff0d78abcfbad067a5ac717bccb4
 
         Source = Tree(self.source)
 # initialise the tree object, i.e. generate a tree with as much levels as required (as acquired the treestatistics)
