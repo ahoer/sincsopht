@@ -61,11 +61,11 @@ class SystemData:
 ##########################################################
     def run(self, log):
         if not self.check_path(self.source):
-            log.emit("Source directory \"{}\" not available, or check permissions!".format(self.source), self.verbose, "error")
+            log.emit("Source directory {} not available, or check permissions!".format(self.source), self.verbose, "error")
             print("Error: Check sincsopht.log")
             sys.exit()
         if not self.check_path(self.target):
-            log.emit("Target directory \"{}\" not available, or check permissions!".format(self.target), self.verbose, "error")
+            log.emit("Target directory {} not available, or check permissions!".format(self.target), self.verbose, "error")
             print("Error: Check sincsopht.log")
             sys.exit()
 
